@@ -2,7 +2,7 @@ const buttonGenerationStep = document.querySelector("#generationStep");
 const buttonRun = document.querySelector("#runSimulation");
 document.addEventListener("click", (event) => {
 	let clicked = event.target;
-	if (clicked.nodeName === "DIV") {
+	if (clicked.nodeName === "DIV" && clicked.classList.contains('box')) {
 		if (clicked.classList.contains("alive")) {
 			clicked.classList.remove("alive");
 		} else {
