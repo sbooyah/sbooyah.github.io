@@ -1,36 +1,13 @@
-class Mover {
-  constructor(x,y) {
-    this.pos = createVector(x,y);
-    this.vel = p5.Vector.random2D();
-    this.vel.mult(random(6));
-    this.score = 0;
-  }
-  update() {
-    this.acc = p5.Vector.random2D();
-    this.acc.setMag(0.1);
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
-  }
-  show() {
-    noStroke();
-    fill(this.score % 359, 100, 70);
-    ellipse(this.pos.x, this.pos.y, 32, 32);
-    drawArrow(this.pos, this.vel);
-  }
-  pullMouse() {
-    
-  }
-}
-
 let mover;
 let scoreDisplay;
+let mouseVec;
 
 function setup() {
-  frameRate(15);
   createCanvas(windowWidth, windowHeight);
   scoreDisplay = createGraphics(300, 200)
   colorMode(HSL, 359, 100, 100, 100);
   mover = new Mover(width/2,height/2);
+  mouseVec = createVector(mouseX, mouseY);
   background(50);
   scoreDisplay.background(100);
   textSize(20);
@@ -39,20 +16,21 @@ function setup() {
 function draw() {
   mover.update();
   mover.show();
-  image(scoreDisplay, width-300, 0);
+  
+  // MOUSE MAGNET
+  if (mouseIsPressed) {
+    mover.pullMouse();
+  }
+  
+  // SCORE
   if (mover.pos.x > 0 && mover.pos.x < width) {
     if (mover.pos.y > 0 && mover.pos.y < height) {
       mover.score++;
     }
   }
-  if (mouseIsPressed) {
-    frameRate(5);
-  } else {
-    frameRate(15);
-  }
-  // MOUSE DISPLAY
-  fill(0, 100, 50);
-  ellipse(mouseX, mouseY, 20, 20);
+  
+  // SCOREBOARD/TEXT AREA
+  image(scoreDisplay, width-300, 0);
 
   // SCORE/TEXT DISPLAY
   fill(100);
